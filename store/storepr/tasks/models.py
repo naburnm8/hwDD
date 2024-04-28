@@ -28,7 +28,7 @@ class Task(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    # новое поле исполнителя задачи
+    # new field for executor
     assignee = models.ForeignKey(
         User,
         related_name='tasks',
