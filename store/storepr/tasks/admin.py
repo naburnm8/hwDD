@@ -2,7 +2,7 @@ from django.contrib import admin
 from .models import Project, Task
 
 
-# inline for task
+
 class TaskInline(admin.TabularInline):
     model = Task
     extra = 0
@@ -12,7 +12,7 @@ class TaskInline(admin.TabularInline):
     show_change_link = True
 
 
-# admin for Project model
+
 @admin.register(Project)
 class ProjectAdmin(admin.ModelAdmin):
     list_display = ('name', 'created_at')
@@ -23,7 +23,7 @@ class ProjectAdmin(admin.ModelAdmin):
     inlines = [TaskInline]
 
 
-# admin for Task model
+
 @admin.register(Task)
 class TaskAdmin(admin.ModelAdmin):
     list_display = ('name', 'project', 'assignee', 'status', 'created_at', 'updated_at')
