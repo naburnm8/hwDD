@@ -1,9 +1,11 @@
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.views import View
 from django.views.generic import DetailView
-from quality_control.models import BugReport, FeatureRequest
+from .models import BugReport, FeatureRequest
+
+from .forms import BugReportForm, FeatureRequestForm
 
 
 def index(request):
@@ -20,13 +22,6 @@ class IndexVew(View):
         return HttpResponse(html)
 
 
-# def bug_report_list(request):
-#     bugs = BugReport.objects.all()
-#     bugs_html = '<h1>Список bugs</h1><ul>'
-#     for bug in bugs:
-#         bugs_html += f'<li><a href="{bug.id}/">{bug.title} статус: {bug.status}</a></li>'
-#     bugs_html += '</ul>'
-#     return HttpResponse(bugs_html)
 def bug_report_list(request):
     bugs = BugReport.objects.all()
     return render(request, 'quality_control/bug_report.html', {'bug_list': bugs})
@@ -41,20 +36,8 @@ class BugDetailView(DetailView):
         self.object = self.get_object()
         bug = self.object
         return render(request, 'quality_control/bug_detail.html', {'bug': bug})
-    # def get(self, request, *args, **kwargs):
-    #     self.object = self.get_object()
-    #     bug = self.object
-    #     response_html = f'<h1>{bug.title}</h1><p>{bug.description}</p><p>Статус: {bug.status}</p><p>Уровень приоритета: {bug.priority}</p><p>Проект: {bug.project}</p><p>Связанная задача: {bug.task}</p>'
-    #     return HttpResponse(response_html)
 
 
-# def feature_report_list(request):
-#     features = FeatureRequest.objects.all()
-#     features_html = '<h1>Список features</h1><ul>'
-#     for feature in features:
-#         features_html += f'<li><a href="{feature.id}/">{feature.title} статус: {feature.status}</a></li>'
-#     features_html += '</ul>'
-#     return HttpResponse(features_html)
 def feature_report_list(request):
     features = FeatureRequest.objects.all()
     return render(request, 'quality_control/feature_report.html', {'feature_list': features})
@@ -67,8 +50,24 @@ class FeatureDetailView(DetailView):
         feature = self.object
         return render(request, 'quality_control/feature_detail.html', {'feature': feature})
 
-    # def get(self, request, *args, **kwargs):
-    #     self.object = self.get_object()
-    #     feature = self.object
-    #     response_html = f'<h1>{feature.title}</h1><p>{feature.description}</p><p>Статус: {feature.status}</p><p>Уровень приоритета: {feature.priority}</p><p>Проект: {feature.project}</p><p>Связанная задача: {feature.task}</p>'
-    #     return HttpResponse(response_html)
+def report_bug(request):
+    if request.method == 'POST':
+        bug = BugReportForm(request.POST)
+        if bug.is_valid():
+
+            bug.save()
+            return redirect('quality_control:bugs')
+    else:
+        bug = BugReportForm()
+    return render(request, 'quality_control/report_bug.html', {'bug': bug})
+
+def request_feature(request):
+    if request.method == 'POST':
+        feature = FeatureRequestForm(request.POST)
+        if feature.is_valid():
+            feature.save()
+            return redirect('quality_control:features')
+    else:
+        feature = BugReportForm()
+    return render(request, 'quality_control/new_feature.html', {'feature': feature})
+

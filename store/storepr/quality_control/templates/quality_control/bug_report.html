@@ -2,6 +2,7 @@
 
 {% block content %}
     <h1>Список багов</h1>
+    <p><a href="{% url 'quality_control:bug_new' %}">Создать отчет о новом баге</a></p>
     <ul>
         {% for bug in bug_list %}
             <li><a href="{% url 'quality_control:bug_details' bug.id %}">{{ bug.title }}</a></li>

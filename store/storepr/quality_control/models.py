@@ -46,6 +46,8 @@ class BugReport(models.Model):
         null=True,
         related_name='bug_reports'
     )
+    class Meta:
+        app_label = 'quality_control'
 
 
 class FeatureRequest(models.Model):

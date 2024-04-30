@@ -1,0 +1,10 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+<h2>Расскажите нам о проблеме</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ bug.as_p }}
+        <button type="submit">Сохранить</button>
+    </form>
+{% endblock %}
