@@ -3,6 +3,8 @@
 {% block content %}
     <h1>Баг: {{ bug.title }}</h1>
     <p>Описание: {{ bug.description }}</p>
+    <p><a href="{% url 'quality_control:bug_update' bug.id %}">Изменить отчет о баге</a></p>
+    <p><a href="{% url 'quality_control:delete_bug' bug.id %}">Удалить отчет</a></p>
     <p>Статус: {{ bug.status }}</p>
     <p>Приоритет: {{ bug.priority }}</p>
     <p>Проект: {{ bug.project }}</p>
